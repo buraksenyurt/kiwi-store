@@ -40,7 +40,10 @@ mod tests {
         let cmd = Command::parse("SET DbConnection dataSource=localhost;database=MongoDb");
         match cmd {
             Command::Invalid(input) => {
-                assert_eq!(input, format!("Key or value exceeds maximum length: {} / {}", 12, 37));
+                assert_eq!(
+                    input,
+                    format!("Key or value exceeds maximum length: {} / {}", 12, 37)
+                );
             }
             _ => panic!("Expected to parse SET command!"),
         }

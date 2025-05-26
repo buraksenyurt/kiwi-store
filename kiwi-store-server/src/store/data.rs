@@ -12,14 +12,14 @@ pub struct DataStore {
 #[allow(dead_code)]
 impl DataStore {
     /// Creates a new instance of `DataStore`
-    /// 
+    ///
     /// # Returns
     /// Returns a new `DataStore` instance with an empty context.
-    /// 
+    ///
     /// # Example
     /// ```rust
     /// use kiwi_store_server::store::data::DataStore;
-    /// 
+    ///
     /// let store = DataStore::new();
     /// ```
     pub fn new() -> Self {
@@ -29,15 +29,15 @@ impl DataStore {
     }
 
     /// Set a key-value pair in the store.
-    /// 
+    ///
     /// # Arguments
     /// * `key` - Key variable
     /// * `value` - Value variable
-    /// 
+    ///
     /// # Example
     /// ```rust
     /// use kiwi_store_server::store::data::DataStore;
-    /// 
+    ///
     /// let store = DataStore::new();
     /// store.set("UseHttps", "Off").await;
     /// ```
@@ -47,21 +47,21 @@ impl DataStore {
     }
 
     /// Remove a key from the store.
-    /// 
+    ///
     /// # Arguments
     /// * `key` - Key variable
-    /// 
+    ///
     /// # Returns
     /// Returns `true` if the key was removed, `false` if it did not exist.
-    /// 
+    ///
     /// # Example
     /// ```rust
     /// use kiwi_store_server::store::data::DataStore;
-    /// 
+    ///
     /// let store = DataStore::new();
     /// store.set("UseHttps", "Off").await;
     /// let removed = store.remove("UseHttps").await;
-    /// 
+    ///
     /// assert!(removed);
     /// ```
     pub async fn remove(&self, key: &str) -> bool {
@@ -70,21 +70,21 @@ impl DataStore {
     }
 
     /// Get the value associated with a key.
-    /// 
+    ///
     /// # Arguments
     /// * `key` - Key variable
-    /// 
+    ///
     /// # Returns
     /// Returns `Some(value)` if the key exists, or `None` if it does not.
-    /// 
+    ///
     /// # Example
     /// ```rust
     /// use kiwi_store_server::store::data::DataStore;
-    /// 
+    ///
     /// let store = DataStore::new();
     /// store.set("UseHttps", "Off").await;
     /// let value = store.get("UseHttps").await;
-    /// 
+    ///
     /// assert_eq!(value, Some("Off".to_string()));
     /// ```
     pub async fn get(&self, key: &str) -> Option<String> {
@@ -93,18 +93,18 @@ impl DataStore {
     }
 
     /// Get all keys in the store.
-    /// 
+    ///
     /// # Returns
     /// Returns a vector of keys present in the store.
-    /// 
+    ///
     /// # Example
     /// ```rust
     /// use kiwi_store_server::store::data::DataStore;
-    /// 
+    ///
     /// let store = DataStore::new();
     /// store.set("UseHttps", "Off").await;
     /// let keys = store.keys().await;
-    /// 
+    ///
     /// assert!(keys.contains(&"UseHttps".to_string()));
     /// ```
     pub async fn keys(&self) -> Vec<String> {
