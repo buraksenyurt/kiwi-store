@@ -1,5 +1,8 @@
 /// Commands for the Kiwi Store server
 
+const MAX_KEY_LENGTH: usize = 8;
+const MAX_VALUE_LENGTH: usize = 100;
+
 #[derive(Debug)]
 /// Represents the key-value store commands
 pub enum Command {
@@ -45,23 +48,31 @@ impl Command {
     /// assert_eq!(cmd, Command::Invalid("INVALID COMMAND".to_string()));
     /// ```
     pub fn parse(input: &str) -> Self {
-        let mut parts = input.trim().splitn(3, ' ');
+        let mut parts = input.trim().split_whitespace();
         let cmd = parts.next().unwrap_or("").to_uppercase();
 
         match cmd.as_str() {
             "SET" => {
                 let key = parts.next().unwrap_or("").to_string();
-                let value = parts.next().unwrap_or("").to_string();
+                let value = parts.collect::<Vec<&str>>().join(" ");
+                if key.len() > MAX_KEY_LENGTH || value.len() > MAX_VALUE_LENGTH {
+                    return Command::Invalid(format!("Key or value exceeds maximum length: {} / {}", key.len(), value.len()));
+                }
                 Command::Set { key, value }
             }
-            "GET" => {
+            "GET" | "REMOVE"=> {
                 let key = parts.next().unwrap_or("").to_string();
-                Command::Get { key }
-            }
-            "REMOVE" => {
-                let key = parts.next().unwrap_or("").to_string();
-                Command::Remove { key }
-            }
+
+                if key.len() > MAX_KEY_LENGTH {
+                    return Command::Invalid(format!("Key exceeds maximum length: {}", key.len()));
+                }
+
+                if cmd == "GET" {
+                    Command::Get { key }
+                } else {
+                    Command::Remove { key }
+                }
+            },
             "LIST" => Command::List,
             _ => Command::Invalid(cmd),
         }
