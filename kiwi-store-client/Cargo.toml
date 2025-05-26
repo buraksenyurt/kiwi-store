@@ -1,0 +1,12 @@
+[package]
+name = "kiwi-store-client"
+description = "A client for the Kiwi Store API"
+license = "MIT"
+repository = "https://github.com/buraksenyurt/kiwi-store"
+authors = ["Burak Selim Şenyurt"]
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+clap = { version = "4.5.38", features = ["derive"] }
+tokio = { version = "1.45.1", features = ["full"] }
