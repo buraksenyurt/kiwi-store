@@ -16,9 +16,14 @@ pub struct Cli {
 
 #[derive(Subcommand)]
 pub enum Arguments {
+    #[command(name = "set", about = "Set a key-value pair")]
     Set { key: String, value: String },
+    #[command(name = "get", about = "Get the value of a key")]
     Get { key: String },
+    #[command(name = "remove", about = "Remove a key")]
     Remove { key: String },
+    #[command(name = "ping", about = "Ping the server for health check")]
     Ping,
+    #[command(name = "list", about = "List all keys in the store")]
     List,
 }
