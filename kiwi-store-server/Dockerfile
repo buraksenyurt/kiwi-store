@@ -1,4 +1,4 @@
-FROM rust:1.87.0 AS builder
+FROM rust:slim-bookworm AS builder
 
 WORKDIR /app
 COPY . .
@@ -10,9 +10,9 @@ FROM debian:bookworm-slim
 RUN apt-get update && apt-get install -y ca-certificates && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-COPY --from=builder /app/target/release/kivi-store-server /usr/local/bin/kivi-store-server
+COPY --from=builder /app/target/release/kiwi-store-server /usr/local/bin/kiwi-store-server
 COPY .env .env
 
 EXPOSE 5555
 
-CMD ["kivi-store-server"]
+CMD ["kiwi-store-server"]

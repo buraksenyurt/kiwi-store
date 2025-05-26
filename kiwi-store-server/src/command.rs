@@ -1,5 +1,4 @@
-/// Commands for the Kiwi Store server
-
+//! Commands for the Kiwi Store server
 const MAX_KEY_LENGTH: usize = 8;
 const MAX_VALUE_LENGTH: usize = 100;
 
@@ -53,7 +52,7 @@ impl Command {
     /// assert_eq!(cmd, Command::Invalid("INVALID COMMAND".to_string()));
     /// ```
     pub fn parse(input: &str) -> Self {
-        let mut parts = input.trim().split_whitespace();
+        let mut parts = input.split_whitespace();
         let cmd = parts.next().unwrap_or("").to_uppercase();
 
         match cmd.as_str() {

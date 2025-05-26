@@ -36,6 +36,15 @@ mod tests {
     }
 
     #[test]
+    fn test_ping_command_parse() {
+        let cmd = Command::parse("PING");
+        match cmd {
+            Command::Ping => {}
+            _ => panic!("Expected to parse PING command!"),
+        }
+    }
+
+    #[test]
     fn test_len_exceeded_command_parse() {
         let cmd = Command::parse("SET DbConnection dataSource=localhost;database=MongoDb");
         match cmd {

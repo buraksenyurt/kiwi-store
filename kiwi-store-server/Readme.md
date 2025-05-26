@@ -9,7 +9,7 @@ Dockerize işlemleri.
 
 ```bash
 # Docker build
-docker build -t kivi-store .
+docker build -t kivi-store-server .
 
 # Docker Compose ile Çalıştırma
 docker-compose up -d

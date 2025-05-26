@@ -1,0 +1,5 @@
+services:
+  kiwi-store-server:
+    build: ./kiwi-store-server
+    ports:
+      - "5555:5555"
