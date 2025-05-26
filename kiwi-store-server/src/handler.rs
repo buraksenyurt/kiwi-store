@@ -1,3 +1,5 @@
+/// Handlers module for the Kiwi Store Server
+
 use crate::command::Command;
 use crate::store::DataStore;
 use log::{error, info};
@@ -5,6 +7,13 @@ use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpStream;
 
 #[allow(dead_code)]
+/// Handles incoming requests from a TCP stream.
+/// It reads the request, processes it on key-value store according to the command, and sends back the response.
+/// 
+/// # Arguments
+/// 
+/// * `stream` - The TCP stream to read from and write to.
+/// * `data_store` - The data store to keep the key-value pairs.
 pub async fn handle_request(mut stream: TcpStream, data_store: DataStore) {
     let mut buffer = [0; 1024];
     loop {
