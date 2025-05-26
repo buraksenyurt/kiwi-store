@@ -17,4 +17,18 @@ Sunucu tarafı için
 docker-compose up -d
 ```
 
-İstemci tarafı için
+İstemci tarafı için komut satır aracı kullanılabilir.
+
+```bash
+# cargo run ile
+# kiwi-store-client klasöründe
+cargo run -- set smtp fake
+cargo run -- get smtp
+cargo run -- set conn "data source=localhost;database=Northwind;integrated security=sspi"
+cargo run -- list
+cargo run -- remove smtp
+```
+
+## Problemler
+
+- Key store'da hiçbir eleman kalmadığında client taraftaki list komutu sonsuz döngüde kalıyor

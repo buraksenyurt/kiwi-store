@@ -29,12 +29,11 @@ pub async fn handle_command() -> tokio::io::Result<()> {
         return Ok(());
     }
     let response = String::from_utf8_lossy(&buffer[..bytes_read]);
-    println!("Response: {}", response);
 
     if response.trim() == "PONG" {
         println!("Server is alive!");
     } else {
-        println!("Server response: {}", response);
+        println!("{}", response);
     }
 
     Ok(())
