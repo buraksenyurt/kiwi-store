@@ -8,6 +8,7 @@ Deneysel ve hafifsiklet bir key-value store çalışmasıdır. İlk sürüm öze
 - Tcp bazlı sunucu ve konsol tabanlı istemci uygulama vardır
 - Server side tamamen asenkrondur
 - İstemci tarafı için bir CLI uygulaması mevcuttur
+- Server side için load, fuzz test işleten bir test koşucu uygulaması vardır
 
 ## Runtime
 
@@ -35,7 +36,7 @@ cargo run -- remove smtp
 
 ## Planlanan Ekler
 
-- [] Load ve Fuzz test yapan bir uygulama.
-- [] Monitoring dashboard
-- [] .Net ile entegrasyon kütüphanesi
-- [] Multi-Node Çalışma
+- [x] Load ve Fuzz test yapan bir uygulama
+- [ ] Monitoring Dashboard
+- [ ] .Net ile entegrasyon kütüphanesi
+- [ ] Multi-Node Çalışma
