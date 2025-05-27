@@ -1,4 +1,6 @@
 //! Commands for the Kiwi Store server
+
+use log::{error, warn};
 const MAX_KEY_LENGTH: usize = 8;
 const MAX_VALUE_LENGTH: usize = 100;
 
@@ -60,6 +62,11 @@ impl Command {
                 let key = parts.next().unwrap_or("").to_string();
                 let value = parts.collect::<Vec<&str>>().join(" ");
                 if key.len() > MAX_KEY_LENGTH || value.len() > MAX_VALUE_LENGTH {
+                    error!(
+                        "Key or value exceeds maximum length: {} / {}",
+                        key.len(),
+                        value.len()
+                    );
                     return Command::Invalid(format!(
                         "Key or value exceeds maximum length: {} / {}",
                         key.len(),
@@ -72,6 +79,7 @@ impl Command {
                 let key = parts.next().unwrap_or("").to_string();
 
                 if key.len() > MAX_KEY_LENGTH {
+                    error!("Key exceeds maximum length: {}", key.len());
                     return Command::Invalid(format!("Key exceeds maximum length: {}", key.len()));
                 }
 
@@ -82,8 +90,14 @@ impl Command {
                 }
             }
             "LIST" => Command::List,
-            "PING" => Command::Ping,
-            _ => Command::Invalid(cmd),
+            "PING" => {
+                warn!("Received PING command");
+                Command::Ping
+            }
+            _ => {
+                error!("Invalid command: {}", cmd);
+                Command::Invalid(cmd)
+            }
         }
     }
 }

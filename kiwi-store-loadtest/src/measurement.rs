@@ -7,7 +7,7 @@ use std::io::Write;
 pub enum TestType {
     #[default]
     Load,
-    Fuzz
+    Fuzz,
 }
 
 #[derive(Serialize, Debug, Default)]

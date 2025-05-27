@@ -37,6 +37,7 @@ cargo run -- remove smtp
 ## Planlanan Ekler
 
 - [x] Load ve Fuzz test yapan bir uygulama
+- [ ] Mesajların şifrelenerek iletiminin sağlanması.
 - [ ] Monitoring Dashboard
 - [ ] .Net ile entegrasyon kütüphanesi
 - [ ] Multi-Node Çalışma

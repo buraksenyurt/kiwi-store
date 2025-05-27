@@ -1,7 +1,7 @@
 /// Handlers module for the Kiwi Store Server
 use crate::command::Command;
 use crate::store::DataStore;
-use log::{error, info};
+use log::{error, info, warn};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpStream;
 
@@ -51,6 +51,7 @@ pub async fn handle_request(mut stream: TcpStream, data_store: DataStore) {
                 if data_store.remove(&key).await {
                     "OK\n".to_string()
                 } else {
+                    warn!("Key '{}' not found for removal", key);
                     "NOT FOUND\n".to_string()
                 }
             }
