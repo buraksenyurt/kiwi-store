@@ -241,6 +241,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "kiwi-store-loadtest"
+version = "0.1.0"
+dependencies = [
+ "tokio",
+]
+
+[[package]]
 name = "kiwi-store-server"
 version = "0.1.0"
 dependencies = [

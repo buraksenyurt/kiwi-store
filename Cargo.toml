@@ -2,4 +2,4 @@
 
 resolver = "2"
 
-members = [ "kiwi-store-client","kiwi-store-server"]
+members = [ "kiwi-store-client", "kiwi-store-loadtest","kiwi-store-server"]
