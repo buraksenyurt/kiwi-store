@@ -6,10 +6,10 @@ use std::io::Write;
 /// Represents the type of test being conducted.
 pub enum TestType {
     #[default]
-    LoadTest,
-    FuzzTest,
-    StressTest,
+    Load,
+    Fuzz
 }
+
 #[derive(Serialize, Debug, Default)]
 #[allow(dead_code)]
 /// Represents the metrics collected during a test run.
