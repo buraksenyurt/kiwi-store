@@ -32,3 +32,10 @@ cargo run -- remove smtp
 ## Problemler
 
 - Key store'da hiçbir eleman kalmadığında client taraftaki list komutu sonsuz döngüde kalıyor
+
+## Planlanan Ekler
+
+- [] Load ve Fuzz test yapan bir uygulama.
+- [] Monitoring dashboard
+- [] .Net ile entegrasyon kütüphanesi
+- [] Multi-Node Çalışma
