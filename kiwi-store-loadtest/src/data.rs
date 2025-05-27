@@ -2,9 +2,9 @@ use std::collections::HashMap;
 
 #[allow(dead_code)]
 /// Represents a dataset containing valid store entries and invalid commands for testing purposes.
-pub struct DataSet{
-    pub valid_store:HashMap<&'static str, &'static str>,
-    pub invalid_commands:Vec<&'static str>,
+pub struct DataSet {
+    pub valid_store: HashMap<&'static str, &'static str>,
+    pub invalid_commands: Vec<&'static str>,
 }
 
 impl DataSet {
@@ -12,7 +12,10 @@ impl DataSet {
     /// Creates a new instance of `DataSet` with predefined valid store entries and invalid commands.
     pub fn new() -> DataSet {
         let valid_store = HashMap::from([
-            ("dbConn", "data source=localhost;Initial Catalog=kiwi;User ID=sa;Password"),
+            (
+                "dbConn",
+                "data source=localhost;Initial Catalog=kiwi;User ID=sa;Password",
+            ),
             ("logLevel", "Verbose"),
             ("theme", "dark"),
             ("maxConnections", "100"),
@@ -27,13 +30,13 @@ impl DataSet {
             ("timezone", "Europe/Istanbul"),
             ("dateFormat", "dd/MM/yyyy"),
             ("currency", "TRY"),
-            ("smtpServer", "smtp.example.com"),
-            ("smtpPort", "587"),
-            ("smtpUser", ""),
-            ("maintenanceMode", "false"),
-            ("backupSchedule", "daily"),
-            ("compressionEnabled", "true"),
-            ("encryptionKey", "s3cr3tK3y123!"),
+            ("smtpSrv", "smtp.azon.com"),
+            ("smtpPrt", "587"),
+            ("smtpUsr", ""),
+            ("mntcMode", "false"),
+            ("backup", "daily"),
+            ("compr", "enabled"),
+            ("encrKey", "s3cr3tK3y123!"),
             ("maxUploadSize", "50MB"),
             ("sessionTimeout", "15m"),
         ]);
