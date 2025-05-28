@@ -42,7 +42,7 @@ pub async fn execute(
 
     run_test(
         address,
-        TestType::Fuzz,
+        TestType::Load,
         client_count,
         commands_per_client,
         factory,

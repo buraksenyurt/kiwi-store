@@ -1,7 +1,11 @@
 use std::env;
 
+use clap::Parser;
+use cli::Cli;
 use log::info;
+use measurement::{Metrics, TestType};
 
+mod cli;
 mod data;
 mod measurement;
 mod runner;
@@ -13,16 +17,41 @@ async fn main() {
 
     let address = env::var("SERVER_ADDRESS").unwrap_or_else(|_| "127.0.0.1:5555".to_string());
     let data_set = data::DataSet::new();
-    let client_count = 10;
-    let commands_per_client = 50;
     info!("Starting load/fuzz test against server at {}", address);
-    // let metrics = runner::fuzz::execute(address, &data_set, client_count, commands_per_client).await;
-    let metrics =
-        runner::load::execute(&address, &data_set, client_count, commands_per_client).await;
-    // let file_name = "metrics.json";
+    let cli = Cli::parse();
+    let mut metrics = Metrics::default();
+
+    let test_type = match cli.kind.as_str() {
+        "fuzz" => TestType::Fuzz,
+        "load" => TestType::Load,
+        _ => panic!("Invalid test kind specified. Use 'fuzz' or 'load'."),
+    };
+
+    let client_count = cli.client_count;
+    let commands_per_client = cli.sample_count;
+
+    match test_type {
+        TestType::Fuzz => {
+            info!(
+                "Running fuzz test with {} clients, each executing {} commands",
+                client_count, commands_per_client
+            );
+            metrics.test_type = TestType::Fuzz;
+            metrics =
+                runner::fuzz::execute(&address, &data_set, client_count, commands_per_client).await;
+        }
+        TestType::Load => {
+            info!(
+                "Running load test with {} clients, each executing {} commands",
+                client_count, commands_per_client
+            );
+            metrics.test_type = TestType::Load;
+            metrics =
+                runner::load::execute(&address, &data_set, client_count, commands_per_client).await;
+        }
+    }
+    info!("Test completed. Metrics collected: {:?}", metrics);
     let file_name = "metrics.dat";
     measurement::export(&metrics, file_name).expect("Failed to export metrics");
     info!("Metrics exported to {}", file_name);
-    info!("Test completed successfully.");
-    info!("Metrics: {:?}", metrics);
 }
