@@ -18,6 +18,7 @@ pub enum TestType {
 #[allow(dead_code)]
 /// Represents the metrics collected during a test run.
 pub struct Metrics {
+    /// The timestamp when the test was conducted.
     pub time_stamp: String,
     /// The type of test being conducted.
     pub test_type: TestType,

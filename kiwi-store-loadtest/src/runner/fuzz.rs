@@ -2,6 +2,7 @@ use crate::{
     data::DataSet,
     measurement::{Metrics, TestType},
 };
+use log::info;
 use rand::seq::IndexedMutRandom;
 use rand::{SeedableRng, rngs::StdRng};
 
@@ -33,7 +34,7 @@ pub async fn execute(
         let mut rng = StdRng::from_os_rng();
         move || {
             let cmd = commands.choose_mut(&mut rng).unwrap();
-            // println!("Executing command: {}", cmd);
+            info!("Executing command: {}", cmd);
             format!("{}\n", cmd)
         }
     };

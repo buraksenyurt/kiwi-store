@@ -2,6 +2,7 @@ use crate::{
     data::DataSet,
     measurement::{Metrics, TestType},
 };
+use log::info;
 use rand::{SeedableRng, rngs::StdRng, seq::IndexedMutRandom};
 
 use super::run_test;
@@ -34,7 +35,7 @@ pub async fn execute(
         move || {
             let key = keys.choose_mut(&mut rng).unwrap();
             let value = values.get(key).unwrap();
-            println!("Executing Command: SET {} {}", key, value);
+            info!("Executing Command: SET {} {}", key, value);
             format!("SET {} {}\n", key, value)
         }
     };
