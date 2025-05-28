@@ -11,7 +11,8 @@ async fn main() {
     // let metrics = runner::fuzz::execute(address, &data_set, client_count, commands_per_client).await;
     let metrics =
         runner::load::execute(address, &data_set, client_count, commands_per_client).await;
-    let file_name = "metrics.json";
+    // let file_name = "metrics.json";
+    let file_name = "metrics.dat";
     measurement::export(&metrics, file_name).expect("Failed to export metrics");
     println!("Metrics exported to {}", file_name);
     println!("Test completed successfully.");

@@ -1,6 +1,9 @@
-use chrono::{DateTime, Utc};
 use serde::Serialize;
-use std::{fs::OpenOptions, io::Write};
+use std::{
+    fmt::{Display, Formatter},
+    fs::OpenOptions,
+    io::Write,
+};
 
 #[derive(Serialize, Debug, Default)]
 #[allow(dead_code)]
@@ -28,6 +31,21 @@ pub struct Metrics {
     pub average_latency_ms: f64,
 }
 
+impl Display for Metrics {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "{}|{:?}|{}|{}|{}|{}",
+            self.time_stamp,
+            self.test_type,
+            self.total_commands,
+            self.successful_commands,
+            self.failed_commands,
+            self.average_latency_ms
+        )
+    }
+}
+
 /// Exports the metrics as a JSON string.
 ///
 /// # Arguments
@@ -38,11 +56,12 @@ pub struct Metrics {
 /// # Returns
 /// A `Result` indicating success or failure of the file write operation.
 pub fn export(metrics: &Metrics, file_name: &str) -> std::io::Result<()> {
-    let json = serde_json::to_string_pretty(metrics)?;
+    // let content = serde_json::to_string_pretty(metrics)?;
+    let content = metrics.to_string();
     let mut file = OpenOptions::new()
         .append(true)
         .create(true)
         .open(file_name)?;
-    file.write_all(json.as_bytes())?;
+    file.write_all(format!("{}\n", content).as_bytes())?;
     Ok(())
 }
