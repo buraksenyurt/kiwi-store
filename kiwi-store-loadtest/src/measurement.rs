@@ -1,5 +1,6 @@
+use chrono::{DateTime, Utc};
 use serde::Serialize;
-use std::io::Write;
+use std::{fs::OpenOptions, io::Write};
 
 #[derive(Serialize, Debug, Default)]
 #[allow(dead_code)]
@@ -14,6 +15,7 @@ pub enum TestType {
 #[allow(dead_code)]
 /// Represents the metrics collected during a test run.
 pub struct Metrics {
+    pub time_stamp: String,
     /// The type of test being conducted.
     pub test_type: TestType,
     /// The total number of commands executed during the test.
@@ -37,7 +39,10 @@ pub struct Metrics {
 /// A `Result` indicating success or failure of the file write operation.
 pub fn export(metrics: &Metrics, file_name: &str) -> std::io::Result<()> {
     let json = serde_json::to_string_pretty(metrics)?;
-    let mut file = std::fs::File::create(file_name)?;
+    let mut file = OpenOptions::new()
+        .append(true)
+        .create(true)
+        .open(file_name)?;
     file.write_all(json.as_bytes())?;
     Ok(())
 }

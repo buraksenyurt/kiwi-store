@@ -2,6 +2,7 @@ pub mod fuzz;
 pub mod load;
 
 use crate::measurement::{Metrics, TestType};
+use chrono::Utc;
 use std::time::Instant;
 use tokio::{
     io::{AsyncReadExt, AsyncWriteExt},
@@ -72,6 +73,7 @@ where
     };
 
     Metrics {
+        time_stamp: Utc::now().to_string(),
         test_type,
         total_commands: success + failure,
         successful_commands: success,
