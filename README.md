@@ -30,9 +30,24 @@ cargo run -- list
 cargo run -- remove smtp
 ```
 
+Load ve Fuzz test yapan kiwi-store-loadtest uygulaması da komut satırından aşağıdaki gibi çalıştırılabilir.
+
+```bash
+# 10 istemci, istemci başına 50 komut
+cargo run -- -k load -c 10 -s 50
+
+# 100 istemci, istemci başına 1000 komut
+cargo run -- -k load -c 100 -s 1000
+
+# 10 istemci, istemci başına 100 geçersiz komut
+cargo run -- -k fuzz -c 10 -s 100
+```
+
 ## Problemler
 
 - Key store'da hiçbir eleman kalmadığında client taraftaki list komutu sonsuz döngüde kalıyor
+- Windows ortamında docker container portu zaman zaman kullanımda kalıyor ve yenisi açılamıyor
+- Key, Value karakter sınıfı ihlallerinde istemci tarafında mesaj dönse de failed olarak yorumlanamıyor _(Load Test uygulaması için geçerli)_
 
 ## Planlanan Ekler
 
