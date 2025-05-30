@@ -1,5 +1,32 @@
 services:
   kiwi-store-server:
     build: ./kiwi-store-server
+    container_name: kw-store-server
     ports:
       - "5555:5555"
+
+  postgres:
+    image: postgres:latest
+    container_name: kw-metrics-db
+    environment:
+      POSTGRES_DB: kiwi
+      POSTGRES_USER: kiwiuser
+      POSTGRES_PASSWORD: kiwipass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: kw-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: scoth@tiger.com
+      PGADMIN_DEFAULT_PASSWORD: 123456
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres-data:
