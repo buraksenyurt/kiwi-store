@@ -1,7 +1,0 @@
-{
-  "test_type": "LoadTest",
-  "total_commands": 50000,
-  "successful_commands": 50000,
-  "failed_commands": 0,
-  "average_latency_ms": 80.78628
-}

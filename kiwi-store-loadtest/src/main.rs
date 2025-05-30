@@ -4,6 +4,7 @@ use clap::Parser;
 use cli::Cli;
 use log::info;
 use measurement::{Metrics, TestType};
+use sqlx::postgres::PgPoolOptions;
 
 mod cli;
 mod data;
@@ -11,11 +12,18 @@ mod measurement;
 mod runner;
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     dotenv::dotenv().ok();
     env_logger::init();
 
     let address = env::var("SERVER_ADDRESS").unwrap_or_else(|_| "127.0.0.1:5555".to_string());
+    let db_url = env::var("DATABASE_URL")?;
+
+    let pool = PgPoolOptions::new()
+        .max_connections(5)
+        .connect(&db_url)
+        .await?;
+
     let data_set = data::DataSet::new();
     info!("Starting load/fuzz test against server at {}", address);
     let cli = Cli::parse();
@@ -51,7 +59,15 @@ async fn main() {
         }
     }
     info!("Test completed. Metrics collected: {:?}", metrics);
-    let file_name = "metrics.dat";
-    measurement::export(&metrics, file_name).expect("Failed to export metrics");
-    info!("Metrics exported to {}", file_name);
+    metrics
+        .save_to_db(&pool)
+        .await
+        .expect("Failed to save metrics to database");
+    info!("Metrics saved to database");
+
+    // let file_name = "metrics.dat";
+    // measurement::export(&metrics, file_name).expect("Failed to export metrics");
+    // info!("Metrics exported to {}", file_name);
+
+    Ok(())
 }

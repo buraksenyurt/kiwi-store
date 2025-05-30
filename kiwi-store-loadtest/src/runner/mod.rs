@@ -73,7 +73,7 @@ where
     };
 
     Metrics {
-        time_stamp: Utc::now().to_string(),
+        time_stamp: Utc::now(),
         test_type,
         total_commands: success + failure,
         successful_commands: success,
