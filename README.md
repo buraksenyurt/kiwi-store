@@ -59,6 +59,11 @@ CREATE TABLE metrics (
 );
 ```
 
+Toplanan metrikleri dashboard uygulamasına vermek içinse basit bir Web API hizmeti kullanılmaktadır _(kiwi-store-metric-api)_ Bu hizmet şu an için 5556 nolu porttan hizmet verir. Bu servisi kullanarak son 50 test verisine ait çizgi grafiğini de dashboard klasöründe yer alan index.html aracılığı ile görebiliriz. Aşağıdakine benzer bir çıktı olacaktır. Burada zaman bazlı bir çıktı söz konusudur. Bunun anlamlı olması için
+belli periyotlarda aynı load ve fuzz oranlarına göre test yapılması daha iyi olabilir.
+
+![Sample dashboard](SampleDashboard_00.png)
+
 ## Problemler
 
 - Key store'da hiçbir eleman kalmadığında client taraftaki list komutu sonsuz döngüde kalıyor
@@ -69,7 +74,8 @@ CREATE TABLE metrics (
 
 - [x] Load ve Fuzz test yapan bir uygulama.
 - [x] Test çıktılarının Postgresql tablosuna yazdırılması.
+- [x] Metrik ölçümlerini dışarıya veren API hizmetinin yazılması.
 - [ ] Mesajların şifrelenerek iletiminin sağlanması.
-- [ ] Monitoring Dashboard
+- [x] Metrik ölçümleri için basit bir montoring dashboard
 - [ ] .Net ile entegrasyon kütüphanesi
 - [ ] Multi-Node Çalışma
