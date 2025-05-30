@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Test Metrics Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+</head>
+
+<body>
+    <h1>Test Metrics Dashboard</h1>
+    <p id="status">Loading...</p>
+
+    <canvas id="metricsChart" width="600" height="300"></canvas>
+
+    <script>
+        const fetchMetrics = async () => {
+            const response = await fetch("http://localhost:5556/metrics");
+            return await response.json();
+        };
+
+        const metricChart = (metrics) => {
+            const fuzzData = [];
+            const loadData = [];
+
+            metrics.forEach(m => {
+                if (!m.time_stamp || !m.average_latency_ms || !m.test_type)
+                    return;
+
+                const point = {
+                    x: new Date(m.time_stamp),
+                    y: m.average_latency_ms
+                };
+
+                if (m.test_type === "Fuzz") {
+                    fuzzData.push(point);
+                }
+                else if (m.test_type === "Load") {
+                    loadData.push(point);
+                }
+            });
+
+            const ctx = document.getElementById("metricsChart").getContext("2d");
+
+            new Chart(ctx, {
+                type: "line",
+                data: {
+                    datasets: [
+                        {
+                            label: "Fuzz",
+                            data: fuzzData,
+                            borderColor: "blue",
+                            backgroundColor: "blue",
+                            tension: 0.5,
+                            fill: false,
+                        },
+                        {
+                            label: "Load",
+                            data: loadData,
+                            borderColor: "red",
+                            backgroundColor: "red",
+                            tension: 0.5,
+                            fill: false,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            type: "time",
+                            time: { unit: "minute" },
+                            title: { display: true, text: "Timestamp" },
+                            ticks: { color: "#666" }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            title: { display: true, text: "Latency (ms)" },
+                            ticks: { color: "#666" }
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { color: "#fff" } }
+                    }
+                }
+            });
+
+            document.getElementById("status").textContent = `Last Update: ${new Date().toLocaleString()}`;
+        };
+
+        fetchMetrics().then(metricChart).catch(err => {
+            document.getElementById("status").textContent = "There is no data!";
+            console.error(err);
+        });
+    </script>
+</body>
+
+</html>
