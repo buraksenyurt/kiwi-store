@@ -3,12 +3,14 @@ use std::{env, net::SocketAddr};
 use axum::{Router, routing::get};
 use data::get_metrics;
 use dotenvy::dotenv;
+use log::info;
 use sqlx::postgres::PgPoolOptions;
 
 mod data;
 #[tokio::main]
 async fn main() {
     dotenv().ok();
+    env_logger::init();
 
     let db_url = env::var("DATABASE_URL").expect("DATABASE_URL not set");
 
@@ -26,10 +28,9 @@ async fn main() {
         }),
     );
 
-    let addr = SocketAddr::from(([127, 0, 0, 1], 5556));
-    println!("API running at http://{}/metrics", addr);
+    let address = SocketAddr::from(([127, 0, 0, 1], 5556));
+    info!("API running at http://{}/metrics", address);
 
-    let listener = tokio::net::TcpListener::bind(&addr).await.unwrap();
+    let listener = tokio::net::TcpListener::bind(&address).await.unwrap();
     axum::serve(listener, app).await.unwrap();
-    println!("Server started on {}", addr);
 }

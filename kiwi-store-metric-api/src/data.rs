@@ -1,5 +1,6 @@
 use axum::Json;
 use chrono::{DateTime, Utc};
+use log::info;
 use serde::Serialize;
 use sqlx::{FromRow, PgPool};
 
@@ -13,7 +14,19 @@ pub struct Metric {
     average_latency_ms: f64,
 }
 
+/// Fetches the latest metrics from the database.
+/// This function queries the `metrics` table and retrieves the most recent 50 entries,
+/// ordered by the timestamp in descending order.
+///
+/// # Arguments
+///
+/// * `pool` - A connection pool to the PostgreSQL database.
+///
+/// # Returns
+///
+/// A JSON response containing a vector of `Metric` structs, each representing a row from the `metrics` table.
 pub async fn get_metrics(pool: PgPool) -> Json<Vec<Metric>> {
+    info!("Fetching metrics from the database");
     let rows = sqlx::query_as::<_, Metric>(
         r#"
         SELECT 
