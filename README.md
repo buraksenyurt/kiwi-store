@@ -12,7 +12,7 @@ Deneysel ve hafifsiklet bir key-value store çalışmasıdır. İlk sürüm öze
 
 ## Runtime
 
-Sunucu tarafı için
+Gerekli ortamlar için docker compose kullanılabilir. _(Sunucu uygulama, metrik ölçümlerinin depolanması için postgresql)_
 
 ```bash
 docker-compose up -d
@@ -43,6 +43,22 @@ cargo run -- -k load -c 100 -s 1000
 cargo run -- -k fuzz -c 10 -s 100
 ```
 
+## Metric Toplama
+
+Test aracının topladığı metrikler text tabanlı olarak CSV formatında tutulabileceği gibi Postgresql veri tabanında bir tabloda da tutulabilir.
+
+```sql
+CREATE TABLE metrics (
+    id SERIAL PRIMARY KEY,
+    time_stamp TIMESTAMPTZ NOT NULL,
+    test_type TEXT NOT NULL,
+    total_commands INT NOT NULL,
+    successful_commands INT NOT NULL,
+    failed_commands INT NOT NULL,
+    average_latency_ms DOUBLE PRECISION NOT NULL
+);
+```
+
 ## Problemler
 
 - Key store'da hiçbir eleman kalmadığında client taraftaki list komutu sonsuz döngüde kalıyor
@@ -51,7 +67,8 @@ cargo run -- -k fuzz -c 10 -s 100
 
 ## Planlanan Ekler
 
-- [x] Load ve Fuzz test yapan bir uygulama
+- [x] Load ve Fuzz test yapan bir uygulama.
+- [x] Test çıktılarının Postgresql tablosuna yazdırılması.
 - [ ] Mesajların şifrelenerek iletiminin sağlanması.
 - [ ] Monitoring Dashboard
 - [ ] .Net ile entegrasyon kütüphanesi
