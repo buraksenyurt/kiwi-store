@@ -31,11 +31,31 @@ docker-compose up -d
 ```bash
 # cargo run ile
 # kiwi-store-client klasöründe
+
+# Yeni bir key-value eklemek
 cargo run -- set smtp fake
+
+# Value değeri çekmek
 cargo run -- get smtp
+
+# İçinde farklı karakterler olan value eklemek
 cargo run -- set conn "data source=localhost;database=Northwind;integrated security=sspi"
+
+# Key listesini çekmek
 cargo run -- list
+
+# Bir key-value çiftini çıkarmak
 cargo run -- remove smtp
+
+# Genel istatistikleri elde etmek
+cargo run -- stats
+
+# Ping-Pong oynamak
+cargo run -- ping
+
+# Geçersiz komut girmek
+cargo run -- set Itsalonglonglonglongwaywemusttogo "lorem ipsum connnection string"
+cargo run -- set ConnectionString "data source = localhot; database = Nortwhing; integrated security=sspi; mars = true; distributed transaction=off"
 ```
 
 Load ve Fuzz test yapan kiwi-store-loadtest uygulaması da komut satırından aşağıdaki gibi çalıştırılabilir.
