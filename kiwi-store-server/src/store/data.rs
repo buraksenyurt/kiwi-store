@@ -113,6 +113,7 @@ impl DataStore {
     }
 
     /// Get statistics about the store.
+    /// This includes the number of keys and the total size of the store in a human-readable format.
     ///
     /// # Returns
     /// Returns a string containing the number of keys and the size of the store.
@@ -128,6 +129,28 @@ impl DataStore {
     /// ```
     pub async fn stats(&self) -> String {
         let context = self.context.lock().await;
-        format!("Keys: {}, Size: {}", context.len(), context.capacity())
+        if context.is_empty() {
+            return "Keys(0), Size(0 B)".to_string();
+        }
+
+        let key_count = context.len();
+        if key_count == 0 {
+            return "Keys(0), Size(0 B)".to_string();
+        }
+        let total_bytes: usize = context
+            .values()
+            .map(|v| v.len())
+            .map(|len| len * std::mem::size_of::<char>())
+            .sum();
+
+        let size = if total_bytes < 1024 {
+            format!("{} B", total_bytes)
+        } else if total_bytes < 1024 * 1024 {
+            format!("{:.2} KB", total_bytes as f64 / 1024.0)
+        } else {
+            format!("{:.2} MB", total_bytes as f64 / (1024.0 * 1024.0))
+        };
+
+        format!("Keys({}), Size({})", key_count, size)
     }
 }
