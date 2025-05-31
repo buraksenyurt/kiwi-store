@@ -94,9 +94,8 @@ belli periyotlarda aynı load ve fuzz oranlarına göre test yapılması daha iy
 
 ## Problemler
 
-- Key store'da hiçbir eleman kalmadığında client taraftaki list komutu sonsuz döngüde kalıyor
-- Windows ortamında docker container portu zaman zaman kullanımda kalıyor ve yenisi açılamıyor
-- Key, Value karakter sınıfı ihlallerinde istemci tarafında mesaj dönse de failed olarak yorumlanamıyor _(Load Test uygulaması için geçerli)_
+- [x] Key store'da hiçbir eleman kalmadığında client taraftaki list komutu sonsuz döngüde kalıyor.
+- [ ] Windows ortamında docker container portu zaman zaman kullanımda kalıyor ve yenisi başlatılamıyor.
 
 ## Planlanan Ekler
 

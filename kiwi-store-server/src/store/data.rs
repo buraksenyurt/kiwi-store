@@ -153,4 +153,9 @@ impl DataStore {
 
         format!("Keys({}), Size({})", key_count, size)
     }
+
+    pub async fn is_empty(&self) -> bool {
+        let context = self.context.lock().await;
+        context.is_empty()
+    }
 }

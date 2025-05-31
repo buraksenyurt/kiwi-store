@@ -55,7 +55,15 @@ pub async fn handle_request(mut stream: TcpStream, data_store: DataStore) {
                     "NOT FOUND\n".to_string()
                 }
             }
-            Command::List => data_store.keys().await.join("\n").to_string(),
+            Command::List => {
+                let result = if data_store.is_empty().await {
+                    warn!("Data store is empty");
+                    "EMPTY STORE\n".to_string()
+                } else {
+                    data_store.keys().await.join("\n").to_string()
+                };
+                result
+            }
             Command::Stats => {
                 let stats = data_store.stats().await;
                 format!("STATS: {}\n", stats)

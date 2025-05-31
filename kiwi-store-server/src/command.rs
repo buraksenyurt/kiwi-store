@@ -3,6 +3,7 @@
 use log::{error, warn};
 const MAX_KEY_LENGTH: usize = 20;
 const MAX_VALUE_LENGTH: usize = 100;
+const FORBIDDEN_KEY_CHARS: [char; 3] = ['\n', '\r', '\0'];
 
 #[derive(Debug)]
 /// Represents the key-value store commands
@@ -66,6 +67,12 @@ impl Command {
             "SET" => {
                 let key = parts.next().unwrap_or("").to_string();
                 let value = parts.collect::<Vec<&str>>().join(" ");
+
+                if key.is_empty() || value.is_empty() {
+                    error!("Key or value is empty");
+                    return Command::Invalid("Key or value cannot be empty".to_string());
+                }
+
                 if key.len() > MAX_KEY_LENGTH || value.len() > MAX_VALUE_LENGTH {
                     error!(
                         "Key or value exceeds maximum length: {} / {}",
@@ -78,6 +85,12 @@ impl Command {
                         value.len()
                     ));
                 }
+                
+                if !key.chars().any(|c| !FORBIDDEN_KEY_CHARS.contains(&c)) {
+                    error!("Key contains forbidden characters: {}", key);
+                    return Command::Invalid(format!("Key contains forbidden characters: {}", key));
+                }
+
                 Command::Set { key, value }
             }
             "GET" | "REMOVE" => {
