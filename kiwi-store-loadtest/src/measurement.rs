@@ -68,6 +68,7 @@ impl Metrics {
     ///
     /// # Returns
     /// A `Result` indicating success or failure of the file write operation.
+    #[allow(dead_code)]
     pub async fn append_to_csv(&self, file_name: &str) -> Result<(), std::io::Error> {
         // let content = serde_json::to_string_pretty(metrics)?;
         let content = self.to_string();

@@ -46,12 +46,12 @@ mod tests {
 
     #[test]
     fn test_len_exceeded_command_parse() {
-        let cmd = Command::parse("SET DbConnection dataSource=localhost;database=MongoDb");
+        let cmd = Command::parse("SET DbConnectionStringIsTooLong dataSource=localhost;database=MongoDb");
         match cmd {
             Command::Invalid(input) => {
                 assert_eq!(
                     input,
-                    format!("Key or value exceeds maximum length: {} / {}", 12, 37)
+                    format!("Key or value exceeds maximum length: {} / {}", 27, 37)
                 );
             }
             _ => panic!("Expected to parse SET command!"),
