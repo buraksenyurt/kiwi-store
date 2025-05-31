@@ -56,6 +56,10 @@ pub async fn handle_request(mut stream: TcpStream, data_store: DataStore) {
                 }
             }
             Command::List => data_store.keys().await.join("\n").to_string(),
+            Command::Stats => {
+                let stats = data_store.stats().await;
+                format!("STATS: {}\n", stats)
+            }
             Command::Invalid(cmd) => format!("ERROR: Unknown command '{}'\n", cmd),
         };
 

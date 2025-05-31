@@ -1,7 +1,7 @@
 //! Commands for the Kiwi Store server
 
 use log::{error, warn};
-const MAX_KEY_LENGTH: usize = 8;
+const MAX_KEY_LENGTH: usize = 20;
 const MAX_VALUE_LENGTH: usize = 100;
 
 #[derive(Debug)]
@@ -17,6 +17,8 @@ pub enum Command {
     List,
     /// Ping command to check server status
     Ping,
+    /// Stats command to get server statistics
+    Stats,
     /// Invalid command with the command string
     Invalid(String),
 }
@@ -49,6 +51,9 @@ impl Command {
     ///
     /// let cmd = Command::parse("PING");
     /// assert_eq!(cmd, Command::Ping);
+    ///
+    /// let cmd = Command::parse("STATS");
+    /// assert_eq!(cmd, Command::Stats);
     ///
     /// let cmd = Command::parse("INVALID COMMAND");
     /// assert_eq!(cmd, Command::Invalid("INVALID COMMAND".to_string()));
@@ -90,6 +95,10 @@ impl Command {
                 }
             }
             "LIST" => Command::List,
+            "STATS" => {
+                warn!("Received STATS command");
+                Command::Stats
+            }
             "PING" => {
                 warn!("Received PING command");
                 Command::Ping

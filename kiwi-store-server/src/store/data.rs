@@ -111,4 +111,23 @@ impl DataStore {
         let context = self.context.lock().await;
         context.keys().cloned().collect()
     }
+
+    /// Get statistics about the store.
+    ///
+    /// # Returns
+    /// Returns a string containing the number of keys and the size of the store.
+    ///
+    /// # Example
+    /// ```rust
+    /// use kiwi_store_server::store::data::DataStore;
+    /// let store = DataStore::new();
+    /// store.set("UseHttps", "Off").await;
+    /// let stats = store.stats().await;
+    /// assert!(stats.contains("Keys: 1"));
+    /// assert!(stats.contains("Size:"));
+    /// ```
+    pub async fn stats(&self) -> String {
+        let context = self.context.lock().await;
+        format!("Keys: {}, Size: {}", context.len(), context.capacity())
+    }
 }

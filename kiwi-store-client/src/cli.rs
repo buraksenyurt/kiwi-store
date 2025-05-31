@@ -26,4 +26,6 @@ pub enum Arguments {
     Ping,
     #[command(name = "list", about = "List all keys in the store")]
     List,
+    #[command(name = "stats", about = "Get store statistics")]
+    Stats,
 }

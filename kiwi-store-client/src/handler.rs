@@ -14,6 +14,7 @@ pub async fn handle_command() -> tokio::io::Result<()> {
         Arguments::Remove { key } => Command::Remove { key }.to_message(),
         Arguments::Ping => Command::Ping.to_message(),
         Arguments::List => Command::List.to_message(),
+        Arguments::Stats => Command::Stats.to_message(),
     };
 
     let message = message + "\n";

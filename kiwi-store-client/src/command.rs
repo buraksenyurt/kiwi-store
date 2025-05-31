@@ -6,6 +6,7 @@ pub enum Command {
     Remove { key: String },
     Ping,
     List,
+    Stats,
 }
 
 #[allow(dead_code)]
@@ -17,6 +18,7 @@ impl Command {
             Command::Remove { key } => format!("REMOVE {}", key),
             Command::Ping => "PING".to_string(),
             Command::List => "LIST".to_string(),
+            Command::Stats => "STATS".to_string(),
         }
     }
 }
