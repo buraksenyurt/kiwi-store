@@ -1,14 +1,22 @@
 # Kiwi-Store
 
-Deneysel ve hafifsiklet bir key-value store çalışmasıdır. İlk sürüm özellikleri;
+Deneysel ve hafifsiklet bir key-value store çalışmasıdır. Amaç geliştirmesi kolay, in-memory çalışan ve başlangıçta tek node üzerinden işleyen bir sistem kurmaktır. Çalışmada yer alan uygulamalar ve genel özellikleri şöyledir.
 
-- Sadece string türden key ve value çiftleri tutulur
-- Key bilgisi 8, Value bilgisi 100 karakterden fazla olamaz
-- Key-Value bilgileri in-memory saklanır
-- Tcp bazlı sunucu ve konsol tabanlı istemci uygulama vardır
-- Server side tamamen asenkrondur
-- İstemci tarafı için bir CLI uygulaması mevcuttur
-- Server side için load, fuzz test işleten bir test koşucu uygulaması vardır
+- Server Side _(kiwi-store-server)_
+  - Sadece string türden key ve value çiftleri tutar
+  - Key bilgisi 20, Value bilgisi 100 karakterden fazla olamaz
+  - Key-Value bilgileri in-memory saklanır
+  - Sunucu tarafı Tcp protokolü üzerinden çalışır
+  - Tamamen asenkrondur
+- CLI _(kiwi-store-client)_
+  - Key, Value eklenmesi, çekilmesi, silinmesi gibi temel işlevleri sağlayan terminal uygulamasıdır
+- Tester _(kiwi-store-loadtest)_
+  - Server side için load, fuzz test işleten bir test koşucusudur
+    - Test değerleri postgresql dosyasına yazılır
+- Metrics Api _(kiwi-store-metric-api)_
+  - Load/Fuzz testlerine ait metrikleri verir
+- Dashboard _(dashboard/index.html)_
+  - Test metrikleri ile ilgili ölçümleri gösteren board'dur.
 
 ## Runtime
 
