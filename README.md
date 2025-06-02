@@ -17,6 +17,12 @@ Deneysel ve hafifsiklet bir key-value store çalışmasıdır. Amaç geliştirme
   - Load/Fuzz testlerine ait metrikleri verir
 - Dashboard _(dashboard/index.html)_
   - Test metrikleri ile ilgili ölçümleri gösteren board'dur.
+- .Net Port Library _(KiwiStore)_
+  - KiwiStore'u .net uygulamalarında kullanabilmek için yazılmış kütüphane
+  - Kütüphane testlerin kolay yapılabilmesi için [Nuget ortamına da](https://www.nuget.org/packages/KiwiStore/) yüklenmiştir.
+- .Net Test App _(KiwiStore.Test.Api)_
+  - KiwiStore paketinin DI üzerinden kullanımının test edildiği basit Web API hizmeti
+  - Set, Get, Remove, List ve diğer tüm hizmetler için örnek kullanımlar sağlar [Postman Koleksiyonuna buradan ulaşılabilir](Key-Value%20Store%20.Net%20Api.postman_collection.json)
 
 ## Runtime
 
@@ -92,17 +98,24 @@ belli periyotlarda aynı load ve fuzz oranlarına göre test yapılması daha iy
 
 ![Sample dashboard](SampleDashboard_00.png)
 
-## Problemler
+## .Net Tarafında Kullanım
 
-- [x] Key store'da hiçbir eleman kalmadığında client taraftaki list komutu sonsuz döngüde kalıyor.
-- [ ] Windows ortamında docker container portu zaman zaman kullanımda kalıyor ve yenisi başlatılamıyor.
+Key-Value store'un .net projelerinden kullanılabilmesi için sonradan Nuget paketi haline de getirilebilecek bir kütüphane yazılmıştır. Nuget paketi KiwiStore.Test.Api isimli Web API hizmetinde basitçe ele alınmıştır. İlgili örnekte KiwiStore bilgileri appsettings.json dosyasından karşılanır. Örnek çalışma zamanı görüntüsü aşağıdaki gibidir.
+
+![Web Api Runtime 00](WebApiRuntime_00.png)
 
 ## Planlanan Ekler
 
 - [x] Load ve Fuzz test yapan bir uygulama.
 - [x] Test çıktılarının Postgresql tablosuna yazdırılması.
 - [x] Metrik ölçümlerini dışarıya veren API hizmetinin yazılması.
+- [x] Metrik ölçümleri için basit bir montoring dashboard.
+- [x] .Net ile entegrasyon kütüphanesi.
+- [x] Nuget paketi yardımıyla key-value store kullanan örnek uygulama.
 - [ ] Mesajların şifrelenerek iletiminin sağlanması.
-- [x] Metrik ölçümleri için basit bir montoring dashboard
-- [ ] .Net ile entegrasyon kütüphanesi
-- [ ] Multi-Node Çalışma
+- [ ] Multi-Node Çalışma.
+
+## Problemler
+
+- [x] Key store'da hiçbir eleman kalmadığında client taraftaki list komutu sonsuz döngüde kalıyor.
+- [ ] Windows ortamında docker container portu zaman zaman kullanımda kalıyor ve yenisi başlatılamıyor.

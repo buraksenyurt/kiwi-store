@@ -1,0 +1,144 @@
+{
+	"info": {
+		"_postman_id": "02370b00-1f60-4733-8d1a-ffc0dff0ae70",
+		"name": "Key-Value Store .Net Api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "1401662"
+	},
+	"item": [
+		{
+			"name": "Set a new Key-Value",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Key\":\"DefaultCurrency\",\r\n    \"Value\":\"TL\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7191/set",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7191",
+					"path": [
+						"set"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove a key-value",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Key\":\"DefaultCurrency\",\r\n    \"Value\":\"TL\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7191/remove/DefaultCurrency",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7191",
+					"path": [
+						"remove",
+						"DefaultCurrency"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a Key-Value",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7191/get/DefaultCurrency",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7191",
+					"path": [
+						"get",
+						"DefaultCurrency"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List of all keys",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7191/list",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7191",
+					"path": [
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Statistics of Key-Value Store",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7191/stats",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7191",
+					"path": [
+						"stats"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Ping-Pong",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7191/ping",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7191",
+					"path": [
+						"ping"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
