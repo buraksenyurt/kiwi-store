@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 
 public class KiwiStoreClient
+    : IKiwiStoreClient
 {
     private readonly KiwiStoreEndpoint _kiwiStoreEndPoint;
     public KiwiStoreClient(KiwiStoreEndpoint? endPoint)
