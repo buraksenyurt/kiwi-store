@@ -4,11 +4,26 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <Title>Kiwi Store .Net Library</Title>
+    <Authors>Burak Selim Şenyurt</Authors>
+    <Description>Rust ile yazılmış in-memory key-value store olan Kiwi-Store hizmetini .Net uygulamalarında kullanmamızı sağlayan yardımcı kütüphanedir.</Description>
+    <PackageReadmeFile>Readme.md</PackageReadmeFile>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <RepositoryUrl>https://github.com/buraksenyurt/kiwi-store</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.5" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Readme.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
