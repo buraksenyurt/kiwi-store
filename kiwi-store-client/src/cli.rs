@@ -8,7 +8,7 @@ use clap::{Parser, Subcommand};
     about = "A simple key-value store client"
 )]
 pub struct Cli {
-    #[arg(long, short, default_value = "127.0.0.1:5555")]
+    #[arg(long, short, default_value = "127.0.0.1:5544")]
     pub address: String,
     #[command(subcommand)]
     pub argument: Arguments,

@@ -46,7 +46,8 @@ mod tests {
 
     #[test]
     fn test_len_exceeded_command_parse() {
-        let cmd = Command::parse("SET DbConnectionStringIsTooLong dataSource=localhost;database=MongoDb");
+        let cmd =
+            Command::parse("SET DbConnectionStringIsTooLong dataSource=localhost;database=MongoDb");
         match cmd {
             Command::Invalid(input) => {
                 assert_eq!(

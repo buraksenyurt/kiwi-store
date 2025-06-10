@@ -1,9 +1,8 @@
 //! Commands for the Kiwi Store server
 
 use log::{error, warn};
-const MAX_KEY_LENGTH: usize = 20;
-const MAX_VALUE_LENGTH: usize = 100;
-const FORBIDDEN_KEY_CHARS: [char; 3] = ['\n', '\r', '\0'];
+
+use crate::config::Configuration;
 
 #[derive(Debug)]
 /// Represents the key-value store commands
@@ -59,7 +58,7 @@ impl Command {
     /// let cmd = Command::parse("INVALID COMMAND");
     /// assert_eq!(cmd, Command::Invalid("INVALID COMMAND".to_string()));
     /// ```
-    pub fn parse(input: &str) -> Self {
+    pub fn parse(input: &str, config: &Configuration) -> Self {
         let mut parts = input.split_whitespace();
         let cmd = parts.next().unwrap_or("").to_uppercase();
 
@@ -73,7 +72,7 @@ impl Command {
                     return Command::Invalid("Key or value cannot be empty".to_string());
                 }
 
-                if key.len() > MAX_KEY_LENGTH || value.len() > MAX_VALUE_LENGTH {
+                if key.len() > config.max_key_length || value.len() > config.max_value_length {
                     error!(
                         "Key or value exceeds maximum length: {} / {}",
                         key.len(),
@@ -85,8 +84,8 @@ impl Command {
                         value.len()
                     ));
                 }
-                
-                if !key.chars().any(|c| !FORBIDDEN_KEY_CHARS.contains(&c)) {
+
+                if !key.chars().any(|c| !config.forbidden_keys.contains(&c)) {
                     error!("Key contains forbidden characters: {}", key);
                     return Command::Invalid(format!("Key contains forbidden characters: {}", key));
                 }
@@ -96,7 +95,7 @@ impl Command {
             "GET" | "REMOVE" => {
                 let key = parts.next().unwrap_or("").to_string();
 
-                if key.len() > MAX_KEY_LENGTH {
+                if key.len() > config.max_key_length {
                     error!("Key exceeds maximum length: {}", key.len());
                     return Command::Invalid(format!("Key exceeds maximum length: {}", key.len()));
                 }

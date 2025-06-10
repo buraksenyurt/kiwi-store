@@ -1,5 +1,8 @@
+use std::sync::Arc;
+
 /// Handlers module for the Kiwi Store Server
 use crate::command::Command;
+use crate::config::Configuration;
 use crate::store::DataStore;
 use log::{error, info, warn};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
@@ -13,7 +16,11 @@ use tokio::net::TcpStream;
 ///
 /// * `stream` - The TCP stream to read from and write to.
 /// * `data_store` - The data store to keep the key-value pairs.
-pub async fn handle_request(mut stream: TcpStream, data_store: DataStore) {
+pub async fn handle_request(
+    mut stream: TcpStream,
+    data_store: DataStore,
+    config: Arc<Configuration>,
+) {
     let mut buffer = [0; 1024];
     let size = match stream.read(&mut buffer).await {
         Ok(0) => return,
@@ -27,7 +34,7 @@ pub async fn handle_request(mut stream: TcpStream, data_store: DataStore) {
     info!("Read {}(bytes)", size);
 
     let request = String::from_utf8_lossy(&buffer[..size]);
-    let cmd = Command::parse(&request);
+    let cmd = Command::parse(&request, &config);
 
     let response = match cmd {
         Command::Ping => {

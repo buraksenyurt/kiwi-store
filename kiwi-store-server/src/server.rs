@@ -1,3 +1,6 @@
+use std::sync::Arc;
+
+use crate::config::Configuration;
 /// Server module for the Kiwi Store application
 use crate::handler::handle_request;
 use crate::store::DataStore;
@@ -13,18 +16,20 @@ use tokio::net::TcpListener;
 /// # Returns
 ///
 /// Returns a `tokio::io::Result<()>` indicating success or failure of the operation.
-pub async fn run(address: &str) -> tokio::io::Result<()> {
-    let listener = TcpListener::bind(address).await?;
+pub async fn run() -> tokio::io::Result<()> {
+    let config = Arc::new(Configuration::from_env());
+    info!("Configuration is loaded: {:?}", config);
+    let listener = TcpListener::bind(config.get_listen_address()).await?;
     let store = DataStore::new();
-
-    info!("Server running at {}", address);
 
     loop {
         let (stream, addr) = listener.accept().await?;
         info!("Client {} connected", addr);
         let store = store.clone();
+        let config = Arc::clone(&config);
+
         tokio::spawn(async move {
-            handle_request(stream, store).await;
+            handle_request(stream, store, config).await;
         });
     }
 }
