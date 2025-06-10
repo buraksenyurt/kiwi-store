@@ -14,8 +14,7 @@ mod tests {
 
     #[test]
     fn test_set_command_parse() {
-        let config = Configuration::default();
-        let cmd = Command::parse("SET H-Check On", &config);
+        let cmd = Command::parse("SET H-Check On");
         match cmd {
             Command::Set { key, value } => {
                 assert_eq!(key, "H-Check");
@@ -27,8 +26,7 @@ mod tests {
 
     #[test]
     fn test_long_value_command_parse() {
-        let config = Configuration::default();
-        let cmd = Command::parse("SET DbConn dataSource=localhost;database=MongoDb", &config);
+        let cmd = Command::parse("SET DbConn dataSource=localhost;database=MongoDb");
         match cmd {
             Command::Set { key, value } => {
                 assert_eq!(key, "DbConn");
@@ -40,8 +38,7 @@ mod tests {
 
     #[test]
     fn test_ping_command_parse() {
-        let config = Configuration::default();
-        let cmd = Command::parse("PING", &config);
+        let cmd = Command::parse("PING");
         match cmd {
             Command::Ping => {}
             _ => panic!("Expected to parse PING command!"),
@@ -49,30 +46,29 @@ mod tests {
     }
 
     #[test]
-    fn test_len_exceeded_command_parse() {
+    fn test_key_len_exceeded_command_parse() {
+        let config = Configuration::default();
+        let cmd =
+            Command::parse("SET DbConnectionStringIsTooLong dataSource=localhost;database=MongoDb");
+        let validation = cmd.validate(&config);
+        assert!(validation.is_err());
+        assert_eq!(validation.unwrap_err(), "Key exceeds maximum length: 27");
+    }
+
+    #[test]
+    fn test_value_len_exceeded_command_parse() {
         let config = Configuration::default();
         let cmd = Command::parse(
-            "SET DbConnectionStringIsTooLong dataSource=localhost;database=MongoDb",
-            &config,
+            "SET ConnStr \"dataSource = localhost;database = AdventureWorksTestDb; user=admin; password=secret; multiple active result sets= true;\"",
         );
-        match cmd {
-            Command::Invalid(input) => {
-                assert_eq!(
-                    input,
-                    format!("Key or value exceeds maximum length: {} / {}", 27, 37)
-                );
-            }
-            _ => panic!("Expected to parse SET command!"),
-        }
+        let validation = cmd.validate(&config);
+        assert!(validation.is_err());
+        assert_eq!(validation.unwrap_err(), "Value exceeds maximum length: 121");
     }
 
     #[test]
     fn test_invalid_command() {
-        let config = Configuration::default();
-        let cmd = Command::parse(
-            "INPUT Connection dataSource=localhost;database=MongoDb",
-            &config,
-        );
+        let cmd = Command::parse("INPUT Connection dataSource=localhost;database=MongoDb");
         match cmd {
             Command::Invalid(input) => {
                 assert_eq!(input, "INPUT")

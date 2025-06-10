@@ -58,7 +58,7 @@ impl Command {
     /// let cmd = Command::parse("INVALID COMMAND");
     /// assert_eq!(cmd, Command::Invalid("INVALID COMMAND".to_string()));
     /// ```
-    pub fn parse(input: &str, config: &Configuration) -> Self {
+    pub fn parse(input: &str) -> Command {
         let mut parts = input.split_whitespace();
         let cmd = parts.next().unwrap_or("").to_uppercase();
 
@@ -66,58 +66,76 @@ impl Command {
             "SET" => {
                 let key = parts.next().unwrap_or("").to_string();
                 let value = parts.collect::<Vec<&str>>().join(" ");
-
-                if key.is_empty() || value.is_empty() {
-                    error!("Key or value is empty");
-                    return Command::Invalid("Key or value cannot be empty".to_string());
-                }
-
-                if key.len() > config.max_key_length || value.len() > config.max_value_length {
-                    error!(
-                        "Key or value exceeds maximum length: {} / {}",
-                        key.len(),
-                        value.len()
-                    );
-                    return Command::Invalid(format!(
-                        "Key or value exceeds maximum length: {} / {}",
-                        key.len(),
-                        value.len()
-                    ));
-                }
-
-                if !key.chars().any(|c| !config.forbidden_keys.contains(&c)) {
-                    error!("Key contains forbidden characters: {}", key);
-                    return Command::Invalid(format!("Key contains forbidden characters: {}", key));
-                }
-
                 Command::Set { key, value }
             }
-            "GET" | "REMOVE" => {
+            "GET" => {
                 let key = parts.next().unwrap_or("").to_string();
-
-                if key.len() > config.max_key_length {
-                    error!("Key exceeds maximum length: {}", key.len());
-                    return Command::Invalid(format!("Key exceeds maximum length: {}", key.len()));
-                }
-
-                if cmd == "GET" {
-                    Command::Get { key }
-                } else {
-                    Command::Remove { key }
-                }
+                Command::Get { key }
+            }
+            "REMOVE" => {
+                let key = parts.next().unwrap_or("").to_string();
+                Command::Remove { key }
             }
             "LIST" => Command::List,
-            "STATS" => {
-                warn!("Received STATS command");
-                Command::Stats
+            "STATS" => Command::Stats,
+            "PING" => Command::Ping,
+            _ => Command::Invalid(cmd),
+        }
+    }
+
+    /// Validates the command against the provided configuration
+    /// 
+    /// # Arguments
+    /// * `config` - The configuration to validate against
+    /// 
+    /// # Returns
+    /// Returns `Ok(Self)` if the command is valid, or an `Err(String)` with an error message if it is not.
+    /// 
+    /// # Example
+    /// ```rust
+    /// use kiwi_store_server::command::Command;
+    /// use kiwi_store_server::config::Configuration;
+    /// let config = Configuration::from_env();
+    /// let cmd = Command::parse("SET UseHttps Off");
+    /// let validated_cmd = cmd.validate(&config);
+    /// assert!(validated_cmd.is_ok());
+    /// let cmd = Command::parse("SET");
+    /// let invalid_cmd = cmd.validate(&config);
+    /// assert!(invalid_cmd.is_err());
+    /// assert_eq!(invalid_cmd.unwrap_err(), "Key or value cannot be empty");
+    /// ```
+    pub fn validate(self, config: &Configuration) -> Result<Self, String> {
+        match self {
+            Command::Set { ref key, ref value } => {
+                if key.is_empty() || value.is_empty() {
+                    error!("Key or value is empty");
+                    return Err("Key or value cannot be empty".to_string());
+                }
+                if key.len() > config.max_key_length {
+                    error!("Key exceeds maximum length: {}", key.len());
+                    return Err(format!("Key exceeds maximum length: {}", key.len()));
+                }
+                if value.len() > config.max_value_length {
+                    error!("Value exceeds maximum length: {}", value.len());
+                    return Err(format!("Value exceeds maximum length: {}", value.len()));
+                }
+                if key.chars().any(|c| config.forbidden_keys.contains(&c)) {
+                    warn!("Key contains forbidden characters: {}", key);
+                    return Err(format!("Key contains forbidden characters: {}", key));
+                }
+                Ok(self)
             }
-            "PING" => {
-                warn!("Received PING command");
-                Command::Ping
+            Command::Get { ref key } | Command::Remove { ref key } => {
+                if key.len() > config.max_key_length {
+                    error!("Key exceeds maximum length: {}", key.len());
+                    return Err(format!("Key exceeds maximum length: {}", key.len()));
+                }
+                Ok(self)
             }
-            _ => {
+            Command::List | Command::Stats | Command::Ping => Ok(self),
+            Command::Invalid(cmd) => {
                 error!("Invalid command: {}", cmd);
-                Command::Invalid(cmd)
+                Err(format!("Invalid command: {}", cmd))
             }
         }
     }
