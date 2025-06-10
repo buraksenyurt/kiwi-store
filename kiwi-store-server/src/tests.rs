@@ -1,6 +1,7 @@
 #[cfg(test)]
 mod tests {
     use crate::command::Command;
+    use crate::config::Configuration;
     use crate::store::DataStore;
 
     #[tokio::test]
@@ -13,7 +14,8 @@ mod tests {
 
     #[test]
     fn test_set_command_parse() {
-        let cmd = Command::parse("SET H-Check On");
+        let config = Configuration::default();
+        let cmd = Command::parse("SET H-Check On", &config);
         match cmd {
             Command::Set { key, value } => {
                 assert_eq!(key, "H-Check");
@@ -25,7 +27,8 @@ mod tests {
 
     #[test]
     fn test_long_value_command_parse() {
-        let cmd = Command::parse("SET DbConn dataSource=localhost;database=MongoDb");
+        let config = Configuration::default();
+        let cmd = Command::parse("SET DbConn dataSource=localhost;database=MongoDb", &config);
         match cmd {
             Command::Set { key, value } => {
                 assert_eq!(key, "DbConn");
@@ -37,7 +40,8 @@ mod tests {
 
     #[test]
     fn test_ping_command_parse() {
-        let cmd = Command::parse("PING");
+        let config = Configuration::default();
+        let cmd = Command::parse("PING", &config);
         match cmd {
             Command::Ping => {}
             _ => panic!("Expected to parse PING command!"),
@@ -46,8 +50,11 @@ mod tests {
 
     #[test]
     fn test_len_exceeded_command_parse() {
-        let cmd =
-            Command::parse("SET DbConnectionStringIsTooLong dataSource=localhost;database=MongoDb");
+        let config = Configuration::default();
+        let cmd = Command::parse(
+            "SET DbConnectionStringIsTooLong dataSource=localhost;database=MongoDb",
+            &config,
+        );
         match cmd {
             Command::Invalid(input) => {
                 assert_eq!(
@@ -61,7 +68,11 @@ mod tests {
 
     #[test]
     fn test_invalid_command() {
-        let cmd = Command::parse("INPUT Connection dataSource=localhost;database=MongoDb");
+        let config = Configuration::default();
+        let cmd = Command::parse(
+            "INPUT Connection dataSource=localhost;database=MongoDb",
+            &config,
+        );
         match cmd {
             Command::Invalid(input) => {
                 assert_eq!(input, "INPUT")

@@ -10,8 +10,8 @@ pub struct Configuration {
 
 impl Configuration {
     pub fn from_env() -> Self {
-        let listen_address = std::env::var("HOST").unwrap_or_else(|_| "127.0.0.0.1".to_string());
-        let listen_port = std::env::var("PORT")
+        let host = std::env::var("HOST").unwrap_or_else(|_| "127.0.0.0.1".to_string());
+        let port = std::env::var("PORT")
             .unwrap_or_else(|_| "5544".to_string())
             .parse::<u16>()
             .unwrap_or(5544);
@@ -23,8 +23,8 @@ impl Configuration {
             _ => (20, 100),
         };
         Self {
-            host: listen_address,
-            port: listen_port,
+            host,
+            port,
             // max_connections: 1000,
             max_key_length,
             max_value_length,
@@ -33,5 +33,19 @@ impl Configuration {
     }
     pub fn get_listen_address(&self) -> String {
         format!("{}:{}", self.host, self.port)
+    }
+}
+
+impl Default for Configuration {
+    fn default() -> Self {
+        let host = "127.0.0.1".to_string();
+        let port = 5544;
+        Self {
+            host,
+            port,
+            max_key_length: 20,
+            max_value_length: 100,
+            forbidden_keys: ['\n', '\r', '\0'].to_vec(),
+        }
     }
 }
