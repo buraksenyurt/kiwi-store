@@ -1,23 +1,24 @@
 ﻿# Kiwi-Store .Net Library
 
-Bu paket Kiwi-Store isimli deneysel key-value store uygulamasının .Net kütüphanesidir. Kiwi-Store kullanımı için Dependency Injection desteği sağlanmaktadır. Kullanımı için aşağıdaki adımları takip edebilirsiniz.
+Bu paket **Kiwi-Store** isimli deneysel key-value store uygulamasının .Net kütüphanesidir. Kiwi-Store kullanımı için **Dependency Injection** desteği sağlanmaktadır. Kullanımı için aşağıdaki adımları takip edebilirsiniz.
 
 ## App Settings Desteği
 
-Kiwi-Store uygulaması için appsettings.json dosyasında aşağıdaki gibi bir yapılandırma yapabilirsiniz:
+Kiwi-Store uygulaması için *appsettings.json* dosyasında aşağıdaki gibi bir yapılandırma yapabilirsiniz:
 
 ```json
 {
   "KiwiStore": {
-	"Host": "127.0.0.1",
-	"Port":5555
+    "Host": "127.0.0.1",
+    "Port":5555
   }
 }
 ```
 
 ## Dependency Injection Desteği
 
-Kiwi-Store uygulamasını DI tarafında aşaıdaki farklı şekillerde kullanabilirsiniz:
+Kiwi-Store uygulamasını DI servislerine aşağıdaki gibi iki farklı biçimde ekleyebilirsiniz.
+
 ```csharp
 builder.Services.AddKiwiStore(endpoint =>
 {
@@ -33,7 +34,8 @@ builder.Services.AddKiwiStore(builder.Configuration);
 
 ## Kullanım
 
-Kiwi-Store paketini herhangibir bileşene enjekte ettikten sonra aşağıdaki gibi kullanabilirsiniz:
+Kiwi-Store paketini herhangibir bileşene enjekte ettikten sonra da aşağıdaki gibi kullanabilirsiniz:
+
 ```csharp
 [ApiController]
 [Route("[controller]")]
