@@ -2,6 +2,8 @@
 
 Deneysel ve hafifsiklet bir key-value store çalışmasıdır. Amaç geliştirmesi kolay, in-memory çalışan ve başlangıçta tek node üzerinden işleyen bir sistem kurmaktır. Çalışmada yer alan uygulamalar ve genel özellikleri şöyledir.
 
+> Server tarafı için [Docker Hub'ta](https://hub.docker.com/r/burakselim/kiwi-store-server) yayınlanmış olan Image da kullanılabilir.
+
 - Server Side _(kiwi-store-server)_
   - Sadece string türden key ve value çiftleri tutar
   - Key bilgisi 20, Value bilgisi 100 karakterden fazla olamaz
