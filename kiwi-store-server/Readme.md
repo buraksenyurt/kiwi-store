@@ -58,3 +58,26 @@ LIST
 REMOVE SimulationMode
 STATS
 ```
+
+## DockerHub Deployment
+
+Kiwi-Store-Server'ın daha kolay kullanılabilmesi için [Docker Hub](https://hub.docker.com/r/burakselim/kiwi-store-server) üzerinden de yayınlamıştır. Docker Hub Deployment işlemleri aşağıdaki adımlar takip edilerek yapılabilir.
+
+```bash
+# Önce login olunur
+docker login
+
+# Dockerfile' ın olduğu konumda imaj oluşturulur
+cd kiwi-store-server
+docker build -t [dockerhub-username]/kiwi-store-server:latest .
+
+# Oluşturulan imaj için tag'de hazırlanabilir
+docker tag  [dockerhub-username]/kiwi-store-server:latest [dockerhub-username]/kiwi-store-server:v1.0.0
+
+# Oluşan imajlar docker hub üzerine publish edilir
+docker push [dockerhub-username]/kiwi-store-server:latest
+docker push [dockerhub-username]/kiwi-store-server:v1.0.0
+
+# Eğer private ise Docker Hub repository public hale getirilir
+# Hub sayfasında markdown formatında `Overview` kısmı eklenerek kullanımı hakkında bilgi verilir
+```
